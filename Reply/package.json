@@ -1,0 +1,27 @@
+{
+  "version": "0.0.0",
+  "name": "WebApplication",
+  "devDependencies": {
+    "babel-eslint": "^3.1.9",
+    "babelify": "^6.1.1",
+    "browserify": "^10.2.1",
+    "del": "^1.2.0",
+    "eslint": "^0.21.2",
+    "eslint-plugin-react": "^2.3.0",
+    "gulp": "^3.8.11",
+    "gulp-eslint": "^0.12.0",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.4",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "dependencies": {
+    "react": "^0.13.3",
+    "react-router": "^0.13.3",
+    "react-mixin": "^1.2.3",
+    "react-bootstrap": "^0.23.0",
+    "q": "^1.4.1",
+    "moment": "^2.10.3"
+  }
+}
