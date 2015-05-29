@@ -2,6 +2,8 @@
 
 const storageKey = 'reply:user';
 
+let storage = localStorage;
+
 class UserService {
     constructor() {
 
@@ -12,15 +14,15 @@ class UserService {
     }
 
     get currentUser() {
-        return localStorage.getItem(storageKey);
+        return storage.getItem(storageKey);
     }
 
     store(user) {
-        localStorage.setItem(storageKey, user);
+        storage.setItem(storageKey, user);
     }
 
     logout() {
-        localStorage.removeItem(storageKey);
+        storage.removeItem(storageKey);
     }
 }
 
