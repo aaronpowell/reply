@@ -4,8 +4,8 @@
 import React from 'react';
 import chatService from '../services/chatService';
 import userService from '../services/userService';
-import MessageList from './MessageList';
-import ChatBox from './ChatBox';
+import MessageList from '../components/MessageList';
+import ChatBox from '../components/ChatBox';
 import AuthenticatedRoute from '../AuthenticatedRoute';
 
 class Home extends AuthenticatedRoute {
