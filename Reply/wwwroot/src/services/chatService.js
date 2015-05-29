@@ -10,7 +10,8 @@ class ChatService {
         this.proxy.on('receiveMessage', ({ Id, Who, What, When }) => this.receiveMessage(Id, Who, What, When));
         this.proxy.on('loggedIn', () => this.loggedIn());
         this.proxy.on('usernameTaken', () => this.usernameTaken());
-        this.proxy.on('userJoined', user => this.receiveMessage(Math.random, 'replybot', `user ${user} has entered the building`, moment()));
+        this.proxy.on('userJoined', user => this.receiveMessage(Math.random(), 'replybot', `user ${user} has entered the building`, moment()));
+        this.proxy.on('receiveMessageHistory', msgs => msgs.forEach(({ Id, Who, What, When }) => this.receiveMessage(Id, Who, What, When)));
 
         this.listeners = {
             login: [],
@@ -32,7 +33,8 @@ class ChatService {
     connect(user) {
         this.connection.qs = { user };
         this.connection.start()
-            .then(() => this.listeners.connected.forEach(fn => fn()));
+            .then(() => this.listeners.connected.forEach(fn => fn()))
+            .then(() => this.proxy.invoke('getHistory'));
     }
 
     login(user) {

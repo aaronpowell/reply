@@ -47,14 +47,16 @@ namespace Reply.Hubs
                 ChatConnections.Add(user, Context.ConnectionId);
                 Clients.AllExcept(Context.ConnectionId).UserJoined(user);
                 Clients.Client(Context.ConnectionId).LoggedIn();
-
-                foreach (var message in messages)
-                    Clients.Client(Context.ConnectionId).ReceiveMessage(message);
             }
             else
             {
                 Clients.Client(Context.ConnectionId).UsernameTaken();
             }
+        }
+
+        public void GetHistory()
+        {
+            Clients.Client(Context.ConnectionId).ReceiveMessageHistory(messages);
         }
 
         public void GetUsers()
