@@ -1,30 +1,55 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR;
+using Reply.Models;
 
 namespace Reply.Hubs
 {
     public class ChatHub : Hub
     {
-        public void SendMessage(string message)
+        private static readonly ConnectionMapper<string> ChatConnections = new ConnectionMapper<string>();
+
+        private readonly object locker = new object();
+        private static List<Message> messages = new List<Message>();
+
+        public void SendMessage(string what)
         {
-            Clients.All.ReceiveMessage(Guid.NewGuid(), Context.QueryString["user"], message, DateTimeOffset.Now);
+            var message = new Message
+            {
+                Id = Guid.NewGuid(),
+                Who = Context.QueryString["user"],
+                What = what,
+                When = DateTimeOffset.Now
+            };
+
+            lock (locker)
+            {
+                messages.Add(message);
+                if (messages.Count > 50)
+                    messages = new List<Message>(messages.Take(50));
+            }
+
+            Clients.All.ReceiveMessage(message);
         }
 
         public void Login()
         {
             var user = Context.QueryString["user"];
 
-            var existingConnections = ConnectionMapper<string>.ChatConnections.GetConnections(user);
+            var existingConnections = ChatConnections.GetConnections(user);
 
             var unused = !existingConnections.Any();
 
             if (unused)
             {
-                ConnectionMapper<string>.ChatConnections.Add(user, Context.ConnectionId);
+                ChatConnections.Add(user, Context.ConnectionId);
                 Clients.AllExcept(Context.ConnectionId).UserJoined(user);
                 Clients.Client(Context.ConnectionId).LoggedIn();
+
+                foreach (var message in messages)
+                    Clients.Client(Context.ConnectionId).ReceiveMessage(message);
             }
             else
             {
@@ -34,14 +59,14 @@ namespace Reply.Hubs
 
         public void GetUsers()
         {
-            var users = ConnectionMapper<string>.ChatConnections.GetAll();
+            var users = ChatConnections.GetAll();
 
             Clients.Client(Context.ConnectionId).UserList(users);
         }
 
         public override Task OnDisconnected(bool stopCalled)
         {
-            ConnectionMapper<string>.ChatConnections.Remove(Context.QueryString["user"], Context.ConnectionId);
+            ChatConnections.Remove(Context.QueryString["user"], Context.ConnectionId);
             return Task.FromResult((string)null);
         }
     }

@@ -5,8 +5,6 @@ namespace Reply
 {
     internal class ConnectionMapper<T>
     {
-        public static readonly ConnectionMapper<string> ChatConnections = new ConnectionMapper<string>();
-
         private readonly Dictionary<T, HashSet<string>> _connections =
             new Dictionary<T, HashSet<string>>();
 

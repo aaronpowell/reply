@@ -7,7 +7,7 @@ class ChatService {
         this.connection = $.hubConnection();
 
         this.proxy = this.connection.createHubProxy('chatHub');
-        this.proxy.on('receiveMessage', (id, who, what, when) => this.receiveMessage(id, who, what, when));
+        this.proxy.on('receiveMessage', ({ Id, Who, What, When }) => this.receiveMessage(Id, Who, What, When));
         this.proxy.on('loggedIn', () => this.loggedIn());
         this.proxy.on('usernameTaken', () => this.usernameTaken());
         this.proxy.on('userJoined', user => this.receiveMessage(Math.random, 'replybot', `user ${user} has entered the building`, moment()));
