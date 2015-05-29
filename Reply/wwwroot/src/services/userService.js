@@ -8,7 +8,7 @@ class UserService {
     }
 
     get authenticated() {
-        return !!this.currentUser();
+        return !!this.currentUser;
     }
 
     get currentUser() {
