@@ -189,4 +189,5 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 
-wwwroot/dist
+Reply/wwwroot/dist/
+.vs
