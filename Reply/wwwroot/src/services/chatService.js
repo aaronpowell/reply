@@ -6,12 +6,14 @@ class ChatService {
 
         this.proxy = this.connection.createHubProxy('chatHub');
         this.proxy.on('receiveMessage', (id, who, what, when) => this.receiveMessage(id, who, what, when));
-        this.proxy.on('loggedIn', status => this.loggedIn(status));
+        this.proxy.on('loggedIn', () => this.loggedIn());
+        this.proxy.on('usernameTaken', () => this.usernameTaken());
 
         this.listeners = {
             login: [],
             message: [],
-            connected: []
+            connected: [],
+            usernameTaken: []
         };
     }
 
@@ -36,12 +38,17 @@ class ChatService {
             .then(() => this.proxy.invoke('login'));
     }
 
-    loggedIn(status) {
-        this.listeners.login.forEach(fn => fn(status));
+    loggedIn() {
+        this.listeners.login.forEach(fn => fn());
     }
 
     receiveMessage(id, who, what, when) {
         this.listeners.message.forEach(fn => fn({ id, who, what, when }));
+    }
+
+    usernameTaken() {
+        this.connection.stop();
+        this.listeners.usernameTaken.forEach(fn => fn());
     }
 }
 

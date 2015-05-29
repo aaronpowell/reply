@@ -21,11 +21,18 @@ namespace Reply.Hubs
             var unused = !existingConnections.Any();
 
             if (unused)
+            {
                 ConnectionMapper<string>.ChatConnections.Add(user, Context.ConnectionId);
+                Clients.AllExcept(Context.ConnectionId).UserJoined(user);
+                Clients.Client(Context.ConnectionId).LoggedIn();
+            }
+            else
+            {
+                Clients.Client(Context.ConnectionId).UsernameTaken();
+            }
 
-            Clients.Client(Context.ConnectionId).LoggedIn(unused);
 
-            Clients.AllExcept(Context.ConnectionId).UserJoined(user);
+
         }
 
         public void GetUsers()
