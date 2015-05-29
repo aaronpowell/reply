@@ -1,5 +1,7 @@
 ﻿'use strict';
 
+import moment from 'moment';
+
 class ChatService {
     constructor() {
         this.connection = $.hubConnection();
@@ -8,6 +10,7 @@ class ChatService {
         this.proxy.on('receiveMessage', (id, who, what, when) => this.receiveMessage(id, who, what, when));
         this.proxy.on('loggedIn', () => this.loggedIn());
         this.proxy.on('usernameTaken', () => this.usernameTaken());
+        this.proxy.on('userJoined', user => this.receiveMessage(Math.random, 'replybot', `user ${user} has entered the building`, moment()));
 
         this.listeners = {
             login: [],
