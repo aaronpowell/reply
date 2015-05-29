@@ -1,3 +1,4 @@
+/*eslint no-unused-vars:0*/
 'use strict';
 
 import React from 'react';
@@ -5,8 +6,9 @@ import chatService from '../services/chatService';
 import userService from '../services/userService';
 import MessageList from './MessageList';
 import ChatBox from './ChatBox';
+import AuthenticatedRoute from '../AuthenticatedRoute';
 
-class Home extends React.Component {
+class Home extends AuthenticatedRoute {
     constructor(props) {
         super(props);
 
