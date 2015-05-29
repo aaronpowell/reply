@@ -72,6 +72,8 @@ IF NOT DEFINED GULP_CMD (
   SET GULP_CMD=node "%appdata%\npm\node_modules\gulp\bin\gulp"
 )
 
+goto :Deployment
+
 :: Utility Functions
 :: -----------------
 
@@ -102,10 +104,13 @@ IF DEFINED KUDU_SELECT_NODE_VERSION_CMD (
   SET NODE_EXE=node
 )
 
+goto :EOF
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 :: Deployment
 :: ----------
 
+:Deployment
 echo Handling .NET Web Application deployment.
 
 :: 1. Restore NuGet packages
