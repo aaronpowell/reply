@@ -66,6 +66,13 @@ namespace Reply.Hubs
             Clients.Client(Context.ConnectionId).UserList(users);
         }
 
+        public void Rejoin()
+        {
+            var user = Context.QueryString["user"];
+            ChatConnections.Add(user, Context.ConnectionId);
+            Clients.AllExcept(Context.ConnectionId).UserJoined(user);
+        }
+
         public override Task OnDisconnected(bool stopCalled)
         {
             ChatConnections.Remove(Context.QueryString["user"], Context.ConnectionId);

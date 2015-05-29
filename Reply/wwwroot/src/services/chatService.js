@@ -10,14 +10,19 @@ class ChatService {
         this.proxy.on('receiveMessage', ({ Id, Who, What, When }) => this.receiveMessage(Id, Who, What, When));
         this.proxy.on('loggedIn', () => this.loggedIn());
         this.proxy.on('usernameTaken', () => this.usernameTaken());
-        this.proxy.on('userJoined', user => this.receiveMessage(Math.random(), 'replybot', `user ${user} has entered the building`, moment()));
+        this.proxy.on('userJoined', user => {
+            this.receiveMessage(Math.random(), 'replybot', `user ${user} has entered the building`, moment());
+            this.updateUserList([user]);
+        });
         this.proxy.on('receiveMessageHistory', msgs => msgs.forEach(({ Id, Who, What, When }) => this.receiveMessage(Id, Who, What, When)));
+        this.proxy.on('userList', users => this.updateUserList(users));
 
         this.listeners = {
             login: [],
             message: [],
             connected: [],
-            usernameTaken: []
+            usernameTaken: [],
+            updateUserList: []
         };
     }
 
@@ -34,7 +39,11 @@ class ChatService {
         this.connection.qs = { user };
         this.connection.start()
             .then(() => this.listeners.connected.forEach(fn => fn()))
-            .then(() => this.proxy.invoke('getHistory'));
+            .then(() => {
+                this.proxy.invoke('rejoin');
+                this.proxy.invoke('getHistory');
+                this.proxy.invoke('getUsers');
+            });
     }
 
     login(user) {
@@ -54,6 +63,10 @@ class ChatService {
     usernameTaken() {
         this.connection.stop();
         this.listeners.usernameTaken.forEach(fn => fn());
+    }
+
+    updateUserList(users) {
+        this.listeners.updateUserList.forEach(fn => fn(users));
     }
 }
 

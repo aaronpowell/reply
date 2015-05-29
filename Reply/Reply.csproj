@@ -123,11 +123,12 @@
     <Content Include=".gitgnore" />
     <Content Include="package.json" />
     <Content Include="wwwroot\src\AuthenticatedRoute.js" />
+    <Content Include="wwwroot\src\components\UserList.js" />
     <Content Include="wwwroot\src\services\chatService.js" />
-    <Content Include="wwwroot\src\views\ChatBox.js" />
+    <Content Include="wwwroot\src\components\ChatBox.js" />
     <Content Include="wwwroot\src\views\Login.js" />
-    <Content Include="wwwroot\src\views\Message.js" />
-    <Content Include="wwwroot\src\views\MessageList.js" />
+    <Content Include="wwwroot\src\components\Message.js" />
+    <Content Include="wwwroot\src\components\MessageList.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />

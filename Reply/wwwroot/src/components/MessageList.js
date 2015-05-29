@@ -11,7 +11,7 @@ class MessageList extends React.Component {
 
     render() {
         return (
-            <Grid>
+            <Grid fluid>
                 {this.props.messages.map(msg => <Message key={msg.id} msg={msg} />)}
             </Grid>
         );
