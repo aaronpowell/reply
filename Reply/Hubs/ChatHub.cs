@@ -30,9 +30,6 @@ namespace Reply.Hubs
             {
                 Clients.Client(Context.ConnectionId).UsernameTaken();
             }
-
-
-
         }
 
         public void GetUsers()
