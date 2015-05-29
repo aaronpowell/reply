@@ -19,9 +19,7 @@ var getBrowserify = function () {
     })
     .transform(babelify);
 
-    return b.bundle()
-        .pipe(source('app.min.js'))
-        .pipe(gulp.dest('./wwwroot/dist'));
+    return b.bundle();
 };
 
 gulp.task('clean', function (cb) {
@@ -36,18 +34,22 @@ gulp.task('eslint', function () {
 });
 
 gulp.task('browserify', function () {
-    return getBrowserify();
-})
+    return getBrowserify()
+        .pipe(source('app.min.js'))
+        .pipe(gulp.dest('./wwwroot/dist'));
+});
 
 gulp.task('default', ['clean', 'eslint', 'browserify']);
 
 gulp.task('release', ['clean', 'eslint'], function () {
     return getBrowserify()
+        .pipe(source('app.min.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(uglify())
         .on('error', gutil.log)
-        .pipe(sourcemaps.write('./'));
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('./wwwroot/dist'));
 });
 
 gulp.task('watch', function () {
